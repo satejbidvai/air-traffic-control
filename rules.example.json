@@ -1,0 +1,7 @@
+{
+  "rules": [
+    { "url": "youtube.com", "app": "com.tinyspeck.slackmacgap", "profile": "Personal" },
+    { "app": "com.tinyspeck.slackmacgap", "profile": "Work" },
+    { "url": "github.com/acme", "profile": "Work" }
+  ]
+}
