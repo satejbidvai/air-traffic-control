@@ -10,8 +10,17 @@ CONFIG_DIR="$HOME/.config/air-traffic-control"
 LSREGISTER="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
 
 rm -rf build
-mkdir -p "$BUILD_APP/Contents/MacOS"
+mkdir -p "$BUILD_APP/Contents/MacOS" "$BUILD_APP/Contents/Resources"
 cp Info.plist "$BUILD_APP/Contents/Info.plist"
+
+ICONSET="build/AppIcon.iconset"
+mkdir -p "$ICONSET"
+for size in 16 32 128 256 512; do
+  sips -z "$size" "$size" Resources/AppIcon.png --out "$ICONSET/icon_${size}x${size}.png" >/dev/null
+  sips -z "$((size * 2))" "$((size * 2))" Resources/AppIcon.png --out "$ICONSET/icon_${size}x${size}@2x.png" >/dev/null
+done
+iconutil -c icns "$ICONSET" -o "$BUILD_APP/Contents/Resources/AppIcon.icns"
+
 xcrun swiftc -O -o "$BUILD_APP/Contents/MacOS/$EXECUTABLE" Sources/main.swift
 codesign --force --sign - "$BUILD_APP"
 
