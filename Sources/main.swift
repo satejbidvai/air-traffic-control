@@ -135,6 +135,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         urls.forEach(passThrough)
     }
 
+    /// macOS sends a Handoff page here only if Info.plist claims NSUserActivityTypeBrowsingWeb.
+    func application(
+        _ application: NSApplication,
+        continue userActivity: NSUserActivity,
+        restorationHandler: @escaping ([any NSUserActivityRestoring]) -> Void
+    ) -> Bool {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+              let url = userActivity.webpageURL
+        else { return false }
+        route(url, sourceApp: nil)
+        return true
+    }
+
     private func sourceApp(of event: NSAppleEventDescriptor) -> String? {
         guard let pid = event.attributeDescriptor(forKeyword: AEKeyword(keySenderPIDAttr))?.int32Value,
               pid > 0

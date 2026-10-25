@@ -22,6 +22,10 @@
 	<true/>
 	<key>NSAppleEventsUsageDescription</key>
 	<string>Air Traffic Control opens links in the correct Dia profile.</string>
+	<key>NSUserActivityTypes</key>
+	<array>
+		<string>NSUserActivityTypeBrowsingWeb</string>
+	</array>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

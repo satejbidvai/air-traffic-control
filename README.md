@@ -10,6 +10,18 @@ Air Traffic Control is the macOS default browser. When you open a link, it reads
 
 Links that you open inside Dia do not go through Air Traffic Control.
 
+Air Traffic Control also gets these links:
+
+- Pages from your iPhone or iPad through Handoff. These links have no source app, so only `url` rules can match them.
+- Links that you send to the Mac with AirDrop.
+
+Air Traffic Control does not get these links:
+
+- Sign-in windows in some apps (`ASWebAuthenticationSession`). Safari opens them, as it does when Dia is the default browser. Dia cannot send the result of the sign-in back to the app.
+- iCloud Tabs. These show only in Safari.
+- Links that you tap in iPhone Mirroring. These open on the iPhone.
+- Universal Links. When an app claims a domain (for example, Zoom), macOS opens that app and not the default browser.
+
 macOS shows an app as a default browser only if the app can open HTML files. Thus Air Traffic Control also accepts local HTML files, and it sends them to Dia with no rules.
 
 ## Requirements
@@ -86,7 +98,8 @@ Possible problems:
 
 - **Cannot read rules**: `rules.json` is missing or is not valid JSON. All links open in the active profile until you correct it.
 - **AppleScript failed**: the profile name is incorrect, Dia has no window, or macOS blocked the permission. Make sure the name agrees with the `osascript` output above. Then look in System Settings > Privacy & Security > Automation.
-- **Source app is `unknown`**: the app did not send its identity with the link. Use a `url` rule for links from that app.
+- **Source app is `unknown`**: the app did not send its identity with the link, or the link came through Handoff. Use a `url` rule for these links.
+- **Handoff opens Safari**: Air Traffic Control is not the default browser, or Handoff is off in System Settings > General > AirDrop & Handoff.
 
 To reset the Automation permission:
 

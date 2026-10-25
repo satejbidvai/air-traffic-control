@@ -5,7 +5,7 @@ Air Traffic Control sends links opened outside Dia to the correct Dia profile. I
 ## Language
 
 **Link**:
-A web URL that the user opens from an app other than Dia.
+A web URL that the user opens from an app other than Dia, or that comes from another device through Handoff. A Link from Handoff has no Source app.
 _Avoid_: URL event, request
 
 **Profile**:
