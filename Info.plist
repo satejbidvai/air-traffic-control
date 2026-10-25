@@ -42,6 +42,7 @@
 			</array>
 		</dict>
 	</array>
+	<!-- macOS shows an app as a default browser only if the app can open HTML files. -->
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

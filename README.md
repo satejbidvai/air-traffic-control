@@ -14,15 +14,7 @@ Air Traffic Control also gets these links:
 
 - Pages from your iPhone or iPad through Handoff. These links have no source app, so only `url` rules can match them.
 - Links that you send to the Mac with AirDrop.
-
-Air Traffic Control does not get these links:
-
-- Sign-in windows in some apps (`ASWebAuthenticationSession`). Safari opens them, as it does when Dia is the default browser. Dia cannot send the result of the sign-in back to the app.
-- iCloud Tabs. These show only in Safari.
-- Links that you tap in iPhone Mirroring. These open on the iPhone.
-- Universal Links. When an app claims a domain (for example, Zoom), macOS opens that app and not the default browser.
-
-macOS shows an app as a default browser only if the app can open HTML files. Thus Air Traffic Control also accepts local HTML files, and it sends them to Dia with no rules.
+- Local HTML files. Air Traffic Control sends them to Dia with no rules.
 
 ## Requirements
 
@@ -40,8 +32,6 @@ Then do these steps:
 
 1. Open System Settings > Desktop & Dock > Default web browser, and select **Air Traffic Control**.
 2. Open a link from another app. When macOS asks to let Air Traffic Control control Dia, click **Allow**.
-
-Each rebuild gets a new signature, so macOS asks for this permission again.
 
 ## Rules
 
@@ -78,7 +68,16 @@ To find the bundle ID of an app:
 osascript -e 'id of app "Slack"'
 ```
 
-## Debugging
+## Troubleshooting
+
+### Links that Air Traffic Control does not get
+
+- Sign-in windows in some apps (`ASWebAuthenticationSession`). Safari opens them, as it does when Dia is the default browser. Dia cannot send the result of the sign-in back to the app.
+- iCloud Tabs. These show only in Safari.
+- Links that you tap in iPhone Mirroring. These open on the iPhone.
+- Universal Links. When an app claims a domain (for example, Zoom), macOS opens that app and not the default browser.
+
+### Log
 
 Air Traffic Control writes to the macOS system log. It logs the host, the source app, and the result. It does not log full URLs.
 
@@ -94,12 +93,13 @@ Show the log for the last 10 minutes:
 log show --last 10m --info --predicate 'subsystem == "com.satejbidvai.air-traffic-control"'
 ```
 
-Possible problems:
+### Possible problems
 
 - **Cannot read rules**: `rules.json` is missing or is not valid JSON. All links open in the active profile until you correct it.
 - **AppleScript failed**: the profile name is incorrect, Dia has no window, or macOS blocked the permission. Make sure the name agrees with the `osascript` output above. Then look in System Settings > Privacy & Security > Automation.
 - **Source app is `unknown`**: the app did not send its identity with the link, or the link came through Handoff. Use a `url` rule for these links.
 - **Handoff opens Safari**: Air Traffic Control is not the default browser, or Handoff is off in System Settings > General > AirDrop & Handoff.
+- **macOS asks for the permission again after `install.sh`**: each build gets a new signature. Click **Allow** again.
 
 To reset the Automation permission:
 
